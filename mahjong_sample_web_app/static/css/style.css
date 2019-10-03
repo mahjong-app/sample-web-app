@@ -1,0 +1,29 @@
+.btn-secondary:not(:disabled):not(.disabled).active, 
+.btn-secondary:not(:disabled):not(.disabled):active, 
+.show>.btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #ff0000;
+    border-color: #ff0000;
+}
+
+#main-form {
+    padding: 10px;
+    text-align: center;
+}
+.tile {
+    margin: 0;
+}
+.tile-item {
+    margin: 2px;
+}
+.status-buttons {
+    margin: 0;
+}
+.submit-buttons {
+    margin: 0;
+    padding: 10px 0;
+}
+.ten {
+    margin: 10px;
+    text-align: center;
+}

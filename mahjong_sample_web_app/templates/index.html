@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <title>mahjong-app</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">mahjong-app</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#">使い方</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <span>XXXX</span><span>さんログイン中</span>
+            </span>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="main-form" class="row">
+            <form>
+                <div class="form-group col">
+                    <label for="image">画像ファイルアップロード</label>
+                    <input type="file" class="form-control-file" id="image">
+                </div>
+                <button type="submit" class="btn btn-primary col">Upload</button>
+            </form>
+        </div>
+        <hr />
+        <div id="main" class="row">
+            <!-- <div id="slid-left" class="col-1">
+                &lt;
+            </div> -->
+            <div id="slid-center" class="col">
+                <form action="/calc" method="GET">
+                    {% for i, tile in data['tiles'] %}
+                    <div class="tile row">
+                        <img src="static/img/pi/{{tile}}.png" alt="{{tile}}" class="rounded tile-item" width="25" />
+                        <input type="hidden" name="pi-{{i}}" value="{{tile}}" />
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" autocomplete="off" name="agari-{{i}}" value="{{tile}}">上牌
+                            </label>
+                        </div>
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" name="naki-{{i}}" value="1" autocomplete="off">明
+                            </label>
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" name="naki-{{i}}" value="2" autocomplete="off">明
+                            </label>
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" name="naki-{{i}}" value="3" autocomplete="off">明
+                            </label>
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" name="naki-{{i}}" value="4" autocomplete="off">明
+                            </label>
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" name="naki-{{i}}" value="5" autocomplete="off">槓
+                            </label>
+                        </div>
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="radio" autocomplete="off" name="dora-{{i}}" value="1">ドラ
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                    <a href="#" class="btn btn-primary tile-item" role="button">牌追加</a>
+
+                    <div class="status-buttons row">
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="ba" id="ton-ba" value="ton-ba" autocomplete="off" checked>東
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="ba" id="nan-ba" value="nan-ba" autocomplete="off">南
+                            </label>
+                        </div>
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="kaze" id="ton" value="ton" autocomplete="off" checked>東
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="nan" value="nan" autocomplete="off">南
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="sha" value="sha" autocomplete="off">西
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="pei" value="pei" autocomplete="off">北
+                            </label>
+                        </div>
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="oya-ko" id="oya" value="oya" autocomplete="off" checked>親
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="oya-ko" id="ko" value="ko" autocomplete="off">子
+                            </label>
+                        </div>
+                    </div>
+                    <div class="submit-buttons row">
+                        <button type="submit" class="btn btn-primary tile-item" name="ron" value="1">ロン</button>
+                        <button type="submit" class="btn btn-primary tile-item" name="tsumo" value="1">ツモ</button>
+                    </div>
+                </form>
+                <hr />
+                <div id="result">
+                    <div>役: {{data['yaku']}}</div>
+                    <!-- <div>親ツモ</div> -->
+                    <div class="fu">{{data['fu']}}符{{data['han']}}翻</div>
+                    <div class="bg-dark text-white ten">{{data['cost_main']}}点 ({{data['cost_additional']}})</div>
+                </div>
+            </div>
+            <!-- <div id="slid-right" class="col">
+                &gt;
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -5,4 +5,10 @@
 
 # 環境構築
 
+```
+$ cd PROJECT_HOME
+$ python3 -v venv env
+$ source env/bin/activate
+$ pip install . -e
+```
 
