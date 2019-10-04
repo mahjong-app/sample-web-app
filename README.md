@@ -12,3 +12,11 @@ $ source env/bin/activate
 $ pip install . -e
 ```
 
+## 起動
+
+```
+$ python mahjong_sample_web_app/run.py
+```
+
+http://localhost:9080 で確認できる
+

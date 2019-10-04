@@ -37,10 +37,10 @@
     </nav>
     <div class="container">
         <div id="main-form" class="row">
-            <form>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
                 <div class="form-group col">
                     <label for="image">画像ファイルアップロード</label>
-                    <input type="file" class="form-control-file" id="image">
+                    <input type="file" class="form-control-file" id="image" name="image">
                 </div>
                 <button type="submit" class="btn btn-primary col">Upload</button>
             </form>
@@ -52,13 +52,13 @@
             </div> -->
             <div id="slid-center" class="col">
                 <form action="/calc" method="GET">
-                    {% for i, tile in data['tiles'] %}
+                    {% for i, tile in tiles %}
                     <div class="tile row">
                         <img src="static/img/pi/{{tile}}.png" alt="{{tile}}" class="rounded tile-item" width="25" />
                         <input type="hidden" name="pi-{{i}}" value="{{tile}}" />
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
                             <label class="btn btn-secondary btn-sm">
-                                <input type="radio" autocomplete="off" name="agari-{{i}}" value="{{tile}}">上牌
+                                <input type="checkbox" autocomplete="off" name="agari" value="{{tile}}">上牌
                             </label>
                         </div>
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
@@ -80,7 +80,12 @@
                         </div>
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
                             <label class="btn btn-secondary btn-sm">
-                                <input type="radio" autocomplete="off" name="dora-{{i}}" value="1">ドラ
+                                <input type="checkbox" autocomplete="off" name="dora-{{i}}" value="1">ドラ
+                            </label>
+                        </div>
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            <label class="btn btn-secondary btn-sm">
+                                <input type="checkbox" autocomplete="off" name="aka-{{i}}" value="1">赤
                             </label>
                         </div>
                     </div>
@@ -128,10 +133,15 @@
                 </form>
                 <hr />
                 <div id="result">
-                    <div>役: {{data['yaku']}}</div>
+                    {% if result %}
+                    {% set data = result %}
+                    <div>役: {{data['yaku']}} {% if data['dora_len'] %}x{{data['dora_len']}}{% endif %}</div>
                     <!-- <div>親ツモ</div> -->
                     <div class="fu">{{data['fu']}}符{{data['han']}}翻</div>
                     <div class="bg-dark text-white ten">{{data['cost_main']}}点 ({{data['cost_additional']}})</div>
+                    {% else %}
+                    <div>ロン または ツモ をクリックして計算する</div>
+                    {% endif %}
                 </div>
             </div>
             <!-- <div id="slid-right" class="col">
