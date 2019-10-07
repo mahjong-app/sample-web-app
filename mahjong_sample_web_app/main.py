@@ -68,33 +68,69 @@ def calc():
     for dora_pi in dora_pies:
         dora_objs.append(str_to_pi_obj(dora_pi))
 
-    player_wind_str = request.args.get("ba")
-    if player_wind_str == "ton-ba":
-        player_wind = EAST
-    elif player_wind_str == "nan-ba":
-        player_wind = SOUTH
-    else:
-        errors.append(f"No ba: {player_wind_str}")
-    round_wind_str = request.args.get("kaze")
-    if round_wind_str == "ton":
+    round_wind_str = request.args.get("ba")
+    if round_wind_str == "ton-ba":
         round_wind = EAST
-    elif round_wind_str == "nan":
+    elif round_wind_str == "nan-ba":
         round_wind = SOUTH
-    elif round_wind_str == "sha":
-        round_wind = WEST
-    elif round_wind_str == "pei":
-        round_wind = NORTH
     else:
-        errors.append(f"No kaze: {round_wind_str}")
+        errors.append(f"No ba: {round_wind_str}")
+    player_wind_str = request.args.get("kaze")
+    if player_wind_str == "ton":
+        player_wind = EAST
+    elif player_wind_str == "nan":
+        player_wind = SOUTH
+    elif player_wind_str == "sha":
+        player_wind = WEST
+    elif player_wind_str == "pei":
+        player_wind = NORTH
+    else:
+        errors.append(f"No kaze: {player_wind}")
+    ron = request.args.get("ron")
+    tsumo = request.args.get("tsumo")
+    if tsumo == "1":
+        is_tsumo = True
+    elif ron == "1":
+        is_tsumo = False
+    else:
+        errors.append(f"No Ron or Tsumo")
+    riichi = request.args.get("riichi")
 
     if errors:
         app.logger.error("pi error: %s", repr(errors))
         return redirect(url_for("index"))
     pies_obj = pies_to_group(pies)
-    result = do_calculator(pies_obj, agari_obj, dora_objs, player_wind, round_wind)
+    attr = {
+        "round_wind": round_wind,
+        "player_wind": player_wind,
+        "is_tsumo": is_tsumo,
+        # "opened": False,  # TODO
+        "is_riichi": riichi,
+        # "is_ippatsu": False,
+        # "is_rinshan": False,
+        # "is_chankan": False,
+        # "is_haitei": False,
+        # "is_houtei": False,
+        # "is_daburu_riichi": False,
+        # "is_nagashi_mangan": False,
+        # "is_tenhou": False,
+        # "is_renhou": False,
+        # "is_chiihou": False,
+    }
+    result = do_calculator(pies_obj, agari_obj, dora_objs, attr)
     app.logger.debug(result)
-    tiles = []
-    return render_template("index.html", tiles=tiles, result=result)
+    tiles = [(i, pi) for i, pi in enumerate(pies)]
+    tiles_attr = {
+        "agari_pi": agari_pi,
+        "is_tsumo": is_tsumo,
+        "is_riichi": riichi,
+        "round_wind_str": round_wind_str,
+        "player_wind_str": player_wind_str,
+    }
+    app.logger.debug("tiles_attr, %s", tiles_attr)
+    return render_template(
+        "index.html", tiles=tiles, result=result, tiles_attr=tiles_attr
+    )
 
 
 def pies_to_group(pies):
@@ -135,10 +171,9 @@ def str_to_pi_obj(pi):
         return None, None
 
 
-def do_calculator(pies_obj, agari_obj, dora_objs, player_wind, round_wind):
+def do_calculator(pies_obj, agari_obj, dora_objs, attr):
     options = rule.copy()
-    winds = {"player_wind": player_wind, "round_wind": round_wind}
-    app.logger.debug("%s, %s", options, winds)
+    app.logger.debug("%s, %s", options, attr)
     calculator = HandCalculator()
     app.logger.debug(pies_obj)
     tiles = TilesConverter.string_to_136_array(**pies_obj)
@@ -147,11 +182,9 @@ def do_calculator(pies_obj, agari_obj, dora_objs, player_wind, round_wind):
     for dora_obj in dora_objs:  # ドラ取得の所は変更が必要かも知れない
         app.logger.debug(dora_obj)
         dora_tiles.append(TilesConverter.string_to_136_array(**dict([dora_obj]))[0])
-    app.logger.debug(
-        "%s, %s, %s, %s, %s", tiles, win_tile, dora_tiles, player_wind, round_wind
-    )
+    app.logger.debug("%s, %s, %s", tiles, win_tile, dora_tiles)
 
-    hans_config = HandConfig(options=OptionalRules(**options), **winds)
+    hans_config = HandConfig(options=OptionalRules(**options), **attr)
     result = calculator.estimate_hand_value(
         tiles, win_tile, dora_indicators=dora_tiles, config=hans_config
     )
@@ -161,11 +194,17 @@ def do_calculator(pies_obj, agari_obj, dora_objs, player_wind, round_wind):
         return result_error
     yaku = result.yaku
     yaku_ja = ", ".join(yaku_ja_map.get(y.name, y.name) for y in yaku)
-    return dict(
+    data = dict(
         fu=result.fu,
         han=result.han,
         cost_main=result.cost["main"],
-        cost_additional=result.cost["additional"],
+        cost_additional=None,
         yaku=yaku_ja,
         dora_len=len(dora_tiles),
     )
+    if attr.get("is_tsumo"):
+        data["cost_additional"] = result.cost["additional"]
+    # if opened:
+    #     pass
+
+    return data

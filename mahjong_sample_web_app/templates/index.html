@@ -57,9 +57,15 @@
                         <img src="static/img/pi/{{tile}}.png" alt="{{tile}}" class="rounded tile-item" width="25" />
                         <input type="hidden" name="pi-{{i}}" value="{{tile}}" />
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            {% if tiles_attr and tiles_attr['agari_pi'] == tile %}
+                            <label class="btn btn-secondary btn-sm active">
+                                <input type="checkbox" autocomplete="off" name="agari" value="{{tile}}" checked>上牌
+                            </label>
+                            {% else %}
                             <label class="btn btn-secondary btn-sm">
                                 <input type="checkbox" autocomplete="off" name="agari" value="{{tile}}">上牌
                             </label>
+                            {% endif %}
                         </div>
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
                             <label class="btn btn-secondary btn-sm">
@@ -93,17 +99,26 @@
 
 
                     <a href="#" class="btn btn-primary tile-item" role="button">牌追加</a>
-
                     <div class="status-buttons row">
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            {% if not tiles_attr or (tiles_attr and tiles_attr['round_wind_str'] == "ton-ba")    %}
                             <label class="btn btn-secondary active">
                                 <input type="radio" name="ba" id="ton-ba" value="ton-ba" autocomplete="off" checked>東
                             </label>
                             <label class="btn btn-secondary">
                                 <input type="radio" name="ba" id="nan-ba" value="nan-ba" autocomplete="off">南
                             </label>
+                            {% elif tiles_attr and tiles_attr['round_wind_str'] == "nan-ba" %}
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="ba" id="ton-ba" value="ton-ba" autocomplete="off">東
+                            </label>
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="ba" id="nan-ba" value="nan-ba" autocomplete="off" checked>南
+                            </label>
+                            {% endif %}
                         </div>
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            {% if not tiles_attr or (tiles_attr and tiles_attr['player_wind_str'] == "ton") %}
                             <label class="btn btn-secondary active">
                                 <input type="radio" name="kaze" id="ton" value="ton" autocomplete="off" checked>東
                             </label>
@@ -116,14 +131,57 @@
                             <label class="btn btn-secondary">
                                 <input type="radio" name="kaze" id="pei" value="pei" autocomplete="off">北
                             </label>
-                        </div>
-                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            {% elif tiles_attr and tiles_attr['player_wind_str'] == "nan" %}
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="ton" value="ton" autocomplete="off">東
+                            </label>
                             <label class="btn btn-secondary active">
-                                <input type="radio" name="oya-ko" id="oya" value="oya" autocomplete="off" checked>親
+                                <input type="radio" name="kaze" id="nan" value="nan" autocomplete="off" checked>南
                             </label>
                             <label class="btn btn-secondary">
-                                <input type="radio" name="oya-ko" id="ko" value="ko" autocomplete="off">子
+                                <input type="radio" name="kaze" id="sha" value="sha" autocomplete="off">西
                             </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="pei" value="pei" autocomplete="off">北
+                            </label>
+                            {% elif tiles_attr and tiles_attr['player_wind_str'] == "sha" %}
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="ton" value="ton" autocomplete="off">東
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="nan" value="nan" autocomplete="off">南
+                            </label>
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="kaze" id="sha" value="sha" autocomplete="off" checked>西
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="pei" value="pei" autocomplete="off">北
+                            </label>
+                            {% elif tiles_attr and tiles_attr['player_wind_str'] == "pei" %}
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="ton" value="ton" autocomplete="off">東
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="nan" value="nan" autocomplete="off">南
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="kaze" id="sha" value="sha" autocomplete="off">西
+                            </label>
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="kaze" id="pei" value="pei" autocomplete="off" checked>北
+                            </label>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
+                            {% if tiles_attr and tiles_attr['is_riichi'] %}
+                            <label class="btn btn-secondary active">
+                                <input type="checkbox" autocomplete="off" name="riichi" value="1" checked>リーチ
+                            </label>
+                            {% else %}
+                            <label class="btn btn-secondary">
+                                <input type="checkbox" autocomplete="off" name="riichi" value="1">リーチ
+                            </label>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="submit-buttons row">
