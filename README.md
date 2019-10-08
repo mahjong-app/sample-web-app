@@ -7,8 +7,10 @@
 
 ```
 $ cd PROJECT_HOME
-$ python3 -v venv env
+$ python3 -m venv env
 $ source env/bin/activate
+$ git clone git@github.com:mahjong-app/sample-web-app.git
+$ cd mahjong_sample_web_app
 $ pip install . -e
 ```
 
