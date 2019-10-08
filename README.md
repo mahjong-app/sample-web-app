@@ -20,3 +20,18 @@ $ python mahjong_sample_web_app/run.py
 
 http://localhost:9080 で確認できる
 
+
+# テスト
+
+## テスト環境構築
+
+```
+$ pip install -e .["test"]
+```
+
+## テストの実行
+
+```
+$ pytest -v
+```
+

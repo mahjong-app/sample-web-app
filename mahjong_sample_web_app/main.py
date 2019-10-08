@@ -142,9 +142,9 @@ def pies_to_group(pies):
         pi_obj = str_to_pi_obj(pi)
         if pi_obj[0] == "man":
             man.append(pi_obj[1])
-        elif pi_obj[0] == "sou":
-            pin.append(pi_obj[1])
         elif pi_obj[0] == "pin":
+            pin.append(pi_obj[1])
+        elif pi_obj[0] == "sou":
             sou.append(pi_obj[1])
         elif pi_obj[0] == "honors":
             honors.append(pi_obj[1])
@@ -157,6 +157,8 @@ def pies_to_group(pies):
 
 
 def str_to_pi_obj(pi):
+    if not pi:
+        return None, None
     if len(pi) == 2:
         if pi.endswith("m"):
             return "man", pi[0]
