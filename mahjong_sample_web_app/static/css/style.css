@@ -5,6 +5,13 @@
     background-color: #ff0000;
     border-color: #ff0000;
 }
+.btn-primary:not(:disabled):not(.disabled).active, 
+.btn-primary:not(:disabled):not(.disabled):active, 
+.show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #ff0000;
+    border-color: #ff0000;
+}
 
 #main-form {
     padding: 10px;

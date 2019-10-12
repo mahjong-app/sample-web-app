@@ -57,32 +57,34 @@
                         <img src="static/img/pi/{{tile}}.png" alt="{{tile}}" class="rounded tile-item" width="25" />
                         <input type="hidden" name="pi-{{i}}" value="{{tile}}" />
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
-                            {% if tiles_attr and tiles_attr['agari_pi'] == tile %}
+                            {% if tiles_attr and tiles_attr['agari_pi_num'] == i %}
                             <label class="btn btn-secondary btn-sm active">
-                                <input type="checkbox" autocomplete="off" name="agari" value="{{tile}}" checked>上牌
+                                <input type="checkbox" autocomplete="off" name="agari-{{i}}" value="1" checked>上牌
                             </label>
                             {% else %}
                             <label class="btn btn-secondary btn-sm">
-                                <input type="checkbox" autocomplete="off" name="agari" value="{{tile}}">上牌
+                                <input type="checkbox" autocomplete="off" name="agari-{{i}}" value="1">上牌
                             </label>
                             {% endif %}
                         </div>
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
-                            <label class="btn btn-secondary btn-sm">
-                                <input type="radio" name="naki-{{i}}" value="1" autocomplete="off">明
+                            {% if tiles_attr and tiles_attr['naki_pi_dict'] %}
+                            {% set naki_val = tiles_attr['naki_pi_dict'].get('naki-'+i) %}
+                            {% else %}
+                            {% set naki_val = None %}
+                            {% endif %}
+                            {% for j in ["1", "2", "3", "4"] %}
+                            {% if j == "4" %}{% set disp = "槓" %}{% else %}{% set disp = "明" %}{% endif %}
+                            {% if naki_val == j %}
+                            <label class="btn btn-secondary btn-sm active">
+                                <input type="radio" name="naki-{{i}}" value="{{j}}" autocomplete="off" checked>{{disp}}
                             </label>
+                            {% else %}
                             <label class="btn btn-secondary btn-sm">
-                                <input type="radio" name="naki-{{i}}" value="2" autocomplete="off">明
+                                <input type="radio" name="naki-{{i}}" value="{{j}}" autocomplete="off">{{disp}}
                             </label>
-                            <label class="btn btn-secondary btn-sm">
-                                <input type="radio" name="naki-{{i}}" value="3" autocomplete="off">明
-                            </label>
-                            <label class="btn btn-secondary btn-sm">
-                                <input type="radio" name="naki-{{i}}" value="4" autocomplete="off">明
-                            </label>
-                            <label class="btn btn-secondary btn-sm">
-                                <input type="radio" name="naki-{{i}}" value="5" autocomplete="off">槓
-                            </label>
+                            {% endif %}
+                            {% endfor %}
                         </div>
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
                             <label class="btn btn-secondary btn-sm">
@@ -101,7 +103,7 @@
                     <a href="#" class="btn btn-primary tile-item" role="button">牌追加</a>
                     <div class="status-buttons row">
                         <div class="btn-group btn-group-toggle tile-item" data-toggle="buttons">
-                            {% if not tiles_attr or (tiles_attr and tiles_attr['round_wind_str'] == "ton-ba")    %}
+                            {% if not tiles_attr or (tiles_attr and tiles_attr['round_wind_str'] == "ton-ba") %}
                             <label class="btn btn-secondary active">
                                 <input type="radio" name="ba" id="ton-ba" value="ton-ba" autocomplete="off" checked>東
                             </label>
@@ -185,8 +187,17 @@
                         </div>
                     </div>
                     <div class="submit-buttons row">
+                        {% if tiles_attr and tiles_attr['is_ron'] %}
+                        <button type="submit" class="btn btn-primary tile-item active" name="ron" value="1">ロン</button>
+                        {% else %}
                         <button type="submit" class="btn btn-primary tile-item" name="ron" value="1">ロン</button>
+                        {% endif %}
+                        {% if tiles_attr and tiles_attr['is_tsumo'] %}
+                        <button type="submit" class="btn btn-primary tile-item active" name="tsumo"
+                            value="1">ツモ</button>
+                        {% else %}
                         <button type="submit" class="btn btn-primary tile-item" name="tsumo" value="1">ツモ</button>
+                        {% endif %}
                     </div>
                 </form>
                 <hr />
@@ -196,7 +207,14 @@
                     <div>役: {{data['yaku']}} {% if data['dora_len'] %}x{{data['dora_len']}}{% endif %}</div>
                     <!-- <div>親ツモ</div> -->
                     <div class="fu">{{data['fu']}}符{{data['han']}}翻</div>
-                    <div class="bg-dark text-white ten">{{data['cost_main']}}点 ({{data['cost_additional']}})</div>
+                    <div class="bg-dark text-white ten">
+                        {% if tiles_attr['is_tsumo'] %}
+                        親: {{data['cost_main']}}点<br>
+                        子: {{data['cost_additional']}}点
+                        {% else %}
+                        {{data['cost_main']}}点
+                        {% endif %}
+                    </div>
                     {% else %}
                     <div>ロン または ツモ をクリックして計算する</div>
                     {% endif %}
