@@ -107,17 +107,14 @@ def _get_pi_objs():
         dora_objs.append(str_to_pi_obj(dora_pi))
     if errors:
         raise ParamError(errors)
-    return (
-        pies,
-        pies_obj,
-        agari_pi,
-        agari_obj,
-        agari_pi_num,
-        naki_pies,
-        naki_pi_dict,
-        melds,
-        dora_objs,
-    )
+    additional = {
+        "pies": pies,
+        "agari_pi": agari_pi,
+        "agari_pi_num": agari_pi_num,
+        "naki_pies": naki_pies,
+        "naki_pi_dict": naki_pi_dict,
+    }
+    return pies_obj, agari_obj, melds, dora_objs, additional
 
 
 def _meld_obj(pies, is_open):
@@ -218,9 +215,7 @@ def calc():
 
     # 牌の取得
     try:
-        pies, pies_obj, agari_pi, agari_obj, agari_pi_num, naki_pies, naki_pi_dict, melds, dora_objs = (
-            _get_pi_objs()
-        )
+        pies_obj, agari_obj, melds, dora_objs, additional = _get_pi_objs()
     except ParamError as errs:
         errors.extend(errs.args)
     except ValueError as err:
@@ -243,12 +238,12 @@ def calc():
     app.logger.debug(result)
 
     # 表示用の設定
-    tiles = [(str(i), pi) for i, pi in enumerate(pies)]
+    tiles = [(str(i), pi) for i, pi in enumerate(additional["pies"])]
     tiles_attr.update(
         {
-            "agari_pi": agari_pi,
-            "agari_pi_num": agari_pi_num,
-            "naki_pi_dict": naki_pi_dict,
+            "agari_pi": additional["agari_pi"],
+            "agari_pi_num": additional["agari_pi_num"],
+            "naki_pi_dict": additional["naki_pi_dict"],
         }
     )
     app.logger.debug("tiles_attr, %s", tiles_attr)
