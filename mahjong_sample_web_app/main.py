@@ -11,6 +11,7 @@ from mahjong.meld import Meld
 from flask import jsonify, request, render_template, redirect, url_for
 from . import app
 from .settings import jihai_numbers, yaku_ja_map, rule
+from .detector.detector import detect
 
 
 class ParamError(Exception):
@@ -24,23 +25,25 @@ def index():
 
 @app.route("/upload", methods=["POST"])
 def upload():
-    image = request.form.get("image")
-    pies = [
-        "2m",
-        "3m",
-        "4m",
-        "4m",
-        "4m",
-        "2s",
-        "3s",
-        "4s",
-        "e",
-        "e",
-        "e",
-        "2p",
-        "3p",
-        "4p",
-    ]
+    img_obj = request.files.get("image")
+    pies = detect(img_obj)
+    app.logger.debug("pies: %s", pies)
+    # pies = [
+    #     "2m",
+    #     "3m",
+    #     "4m",
+    #     "4m",
+    #     "4m",
+    #     "2s",
+    #     "3s",
+    #     "4s",
+    #     "e",
+    #     "e",
+    #     "e",
+    #     "2p",
+    #     "3p",
+    #     "4p",
+    # ]
     pies_str = "|".join(pies)
     return redirect(url_for("confirm", pies=pies_str))
 
