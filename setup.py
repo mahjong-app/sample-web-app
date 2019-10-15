@@ -18,6 +18,7 @@ setup(
         # "flask-cors",
         "Jinja2",
         "mahjong",
+        "uWSGI",
     ],
     author="Manabu TERADA",
     author_email="terada@cmscom.jp",

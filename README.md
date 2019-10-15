@@ -37,3 +37,10 @@ $ pip install -e .["test"]
 $ pytest -v
 ```
 
+
+# Docker環境
+
+```
+$ docker build . -t local/mahjong_sample
+$ docker run --rm -it -p 8080:8080 -v $PWD/log:/code/log local/mahjong_sample
+```
