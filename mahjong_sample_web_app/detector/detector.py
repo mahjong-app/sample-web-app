@@ -4,8 +4,8 @@ import numpy as np
 # from scipy.misc import imresize
 from PIL import Image as pil_image
 from keras.preprocessing import image
-from .postprocess import PostProcess
-from .ssd.ssd import SingleShotMultiBoxDetector
+from postprocess import PostProcess
+from ssd.ssd import SingleShotMultiBoxDetector
 
 
 model_file = Path(__file__).parent / "models" / "weights.25-0.05.hdf5"
@@ -18,8 +18,8 @@ def model_build(model_file, param_file):
     ssd = SingleShotMultiBoxDetector(
         overlap_threshold=0.5, nms_threshold=0.45, max_output_size=400
     )
-    ssd.load_parameters(param_file)
-    ssd.build(init_weight=model_file)
+    ssd.load_parameters(str(param_file))
+    ssd.build(init_weight=str(model_file))
     return ssd
 
 
@@ -75,3 +75,9 @@ def detect(img_obj):
     # pp.save_image(img, pred_result, savepath)
     # print(list_label)
     return list_label
+
+
+if __name__ == "__main__":
+    ssd = model_build(model_file, param_file)
+    print(ssd)
+

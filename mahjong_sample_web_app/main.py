@@ -20,6 +20,7 @@ class ParamError(Exception):
 
 @app.route("/", methods=["GET"])
 def index():
+    return "test"
     return render_template("index.html")
 
 
@@ -67,40 +68,40 @@ def _get_pi_objs():
     naki_4 = []
     dora_pies = []
     dora_objs = []
-    for i in range(18):
-        pi = request.args.get(f"pi-{i}")
-        if pi:
-            pies.append(pi)
+    # for i in range(18):
+    #     pi = request.args.get(f"pi-{i}")
+    #     if pi:
+    #         pies.append(pi)
 
-        agari_pi_req = request.args.get(f"agari-{i}")
-        if agari_pi_req:
-            agari_pi = pi
-            agari_pi_num = str(i)
+    #     agari_pi_req = request.args.get(f"agari-{i}")
+    #     if agari_pi_req:
+    #         agari_pi = pi
+    #         agari_pi_num = str(i)
 
-        naki_num = request.args.get(f"naki-{i}")
-        if naki_num:
-            naki_pi_dict.update({f"naki-{i}": naki_num})
-            if naki_num == "1":
-                naki_1.append(pi)
-            elif naki_num == "2":
-                naki_2.append(pi)
-            elif naki_num == "3":
-                naki_3.append(pi)
-            elif naki_num == "4":
-                naki_4.append(pi)
-        is_dora = request.args.get(f"dora-{i}")
-        if is_dora == "1":
-            dora_pies.append(pi)
-    if len(pies) < 14:
-        errors.append(f"Less pi obj: {len(pies)}")
-    pies_obj = pies_to_group(pies)
-    app.logger.debug(agari_pi)
-    if not agari_pi:
-        errors.append(f"No agari pi obj")
-    else:
-        agari_obj = str_to_pi_obj(agari_pi)
-        if agari_obj is None:
-            errors.append(f"Can't make obj: {agari_obj}")
+    #     naki_num = request.args.get(f"naki-{i}")
+    #     if naki_num:
+    #         naki_pi_dict.update({f"naki-{i}": naki_num})
+    #         if naki_num == "1":
+    #             naki_1.append(pi)
+    #         elif naki_num == "2":
+    #             naki_2.append(pi)
+    #         elif naki_num == "3":
+    #             naki_3.append(pi)
+    #         elif naki_num == "4":
+    #             naki_4.append(pi)
+    #     is_dora = request.args.get(f"dora-{i}")
+    #     if is_dora == "1":
+    #         dora_pies.append(pi)
+    # if len(pies) < 14:
+    #     errors.append(f"Less pi obj: {len(pies)}")
+    # pies_obj = pies_to_group(pies)
+    # app.logger.debug(agari_pi)
+    # if not agari_pi:
+    #     errors.append(f"No agari pi obj")
+    # else:
+    #     agari_obj = str_to_pi_obj(agari_pi)
+    #     if agari_obj is None:
+    #         errors.append(f"Can't make obj: {agari_obj}")
 
     app.logger.debug("Melds: %s, %s, %s, %s", naki_1, naki_2, naki_3, naki_4)
     melds = _get_meld_pies(naki_1, naki_2, naki_3, naki_4)
@@ -155,61 +156,62 @@ def _get_meld_pies(naki_1, naki_2, naki_3, naki_4):
 
 
 def _get_attr_setting():
-    round_wind_str = request.args.get("ba")
-    if round_wind_str == "ton-ba":
-        round_wind = EAST
-    elif round_wind_str == "nan-ba":
-        round_wind = SOUTH
-    else:
-        raise ParamError(f"No ba: {round_wind_str}")
-    player_wind_str = request.args.get("kaze")
-    if player_wind_str == "ton":
-        player_wind = EAST
-    elif player_wind_str == "nan":
-        player_wind = SOUTH
-    elif player_wind_str == "sha":
-        player_wind = WEST
-    elif player_wind_str == "pei":
-        player_wind = NORTH
-    else:
-        raise ParamError(f"No kaze: {player_wind}")
-    ron = request.args.get("ron")
-    tsumo = request.args.get("tsumo")
-    if tsumo == "1":
-        is_tsumo = True
-        is_ron = False
-    elif ron == "1":
-        is_tsumo = False
-        is_ron = True
-    else:
-        raise ParamError(f"No Ron or Tsumo")
-    riichi = request.args.get("riichi")
-    attr = {
-        "round_wind": round_wind,
-        "player_wind": player_wind,
-        "is_tsumo": is_tsumo,
-        # "opened": False,  # TODO
-        "is_riichi": riichi,
-        # "is_ippatsu": False,
-        # "is_rinshan": False,
-        # "is_chankan": False,
-        # "is_haitei": False,
-        # "is_houtei": False,
-        # "is_daburu_riichi": False,
-        # "is_nagashi_mangan": False,
-        # "is_tenhou": False,
-        # "is_renhou": False,
-        # "is_chiihou": False,
-    }
-    tiles_attr = {
-        "is_tsumo": is_tsumo,
-        "is_ron": is_ron,
-        "is_riichi": riichi,
-        "round_wind_str": round_wind_str,
-        "player_wind_str": player_wind_str,
-    }
+    return {}, {}
+    # round_wind_str = request.args.get("ba")
+    # if round_wind_str == "ton-ba":
+    #     round_wind = EAST
+    # elif round_wind_str == "nan-ba":
+    #     round_wind = SOUTH
+    # else:
+    #     raise ParamError(f"No ba: {round_wind_str}")
+    # player_wind_str = request.args.get("kaze")
+    # if player_wind_str == "ton":
+    #     player_wind = EAST
+    # elif player_wind_str == "nan":
+    #     player_wind = SOUTH
+    # elif player_wind_str == "sha":
+    #     player_wind = WEST
+    # elif player_wind_str == "pei":
+    #     player_wind = NORTH
+    # else:
+    #     raise ParamError(f"No kaze: {player_wind}")
+    # ron = request.args.get("ron")
+    # tsumo = request.args.get("tsumo")
+    # if tsumo == "1":
+    #     is_tsumo = True
+    #     is_ron = False
+    # elif ron == "1":
+    #     is_tsumo = False
+    #     is_ron = True
+    # else:
+    #     raise ParamError(f"No Ron or Tsumo")
+    # riichi = request.args.get("riichi")
+    # attr = {
+    #     "round_wind": round_wind,
+    #     "player_wind": player_wind,
+    #     "is_tsumo": is_tsumo,
+    #     # "opened": False,  # TODO
+    #     "is_riichi": riichi,
+    #     # "is_ippatsu": False,
+    #     # "is_rinshan": False,
+    #     # "is_chankan": False,
+    #     # "is_haitei": False,
+    #     # "is_houtei": False,
+    #     # "is_daburu_riichi": False,
+    #     # "is_nagashi_mangan": False,
+    #     # "is_tenhou": False,
+    #     # "is_renhou": False,
+    #     # "is_chiihou": False,
+    # }
+    # tiles_attr = {
+    #     "is_tsumo": is_tsumo,
+    #     "is_ron": is_ron,
+    #     "is_riichi": riichi,
+    #     "round_wind_str": round_wind_str,
+    #     "player_wind_str": player_wind_str,
+    # }
 
-    return attr, tiles_attr
+    # return attr, tiles_attr
 
 
 @app.route("/calc", methods=["GET"])

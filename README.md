@@ -44,3 +44,8 @@ $ pytest -v
 $ docker build . -t local/mahjong_sample
 $ docker run --rm -it -p 8080:8080 -v $PWD/log:/code/log local/mahjong_sample
 ```
+
+```
+$ docker build -t local/mahjong_sample_tf -f Dockerfile.tf .
+$ docker run --rm -it local/mahjong_sample_tf
+```

@@ -23,7 +23,7 @@ setup(
         "numpy",
         # "scipy",
         "keras",
-        "tensorflow==1.14.0",
+        # "tensorflow",
     ],
     author="Manabu TERADA",
     author_email="terada@cmscom.jp",
