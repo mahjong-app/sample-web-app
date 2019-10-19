@@ -37,3 +37,17 @@
 #result {
     text-align: center;
 }
+
+.flashes li {
+    margin-left: -50px;
+    border-bottom: 0.5px solid white;
+    width: 100vw;
+    color: white;
+    padding-left: 10px;
+}
+.success {
+    background-color: midnightblue;
+}
+.failed {
+    background-color: deeppink;
+}

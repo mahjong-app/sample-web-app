@@ -8,7 +8,7 @@ from mahjong.hand_calculating.hand_config import (
 )
 from mahjong.constants import EAST, NORTH, SOUTH, WEST
 from mahjong.meld import Meld
-from flask import jsonify, request, render_template, redirect, url_for
+from flask import jsonify, request, render_template, redirect, url_for, flash
 from . import app
 from .settings import jihai_numbers, yaku_ja_map, rule
 
@@ -25,6 +25,7 @@ def index():
 @app.route("/upload", methods=["POST"])
 def upload():
     image = request.form.get("image")
+    flash("image.filename", "success")
     pies = [
         "2m",
         "3m",
@@ -42,6 +43,7 @@ def upload():
         "4p",
     ]
     pies_str = "|".join(pies)
+    flash("ファイルのアップロード完了", "success")
     return redirect(url_for("confirm", pies=pies_str))
 
 
@@ -49,6 +51,7 @@ def upload():
 def confirm():
     pies_str = request.args.get("pies", [])
     tiles = [(i, pi) for i, pi in enumerate(pies_str.split("|"))]
+    flash("麻雀牌を画像から取得完了", "success")
     return render_template("index.html", tiles=tiles)
 
 
@@ -231,6 +234,8 @@ def calc():
 
     if errors:
         app.logger.error("pi error: %s", repr(errors))
+        for error in errors:
+            flash(repr(error), "failed")
         return redirect(url_for("index"))
 
     # 計算の実行
@@ -247,6 +252,7 @@ def calc():
         }
     )
     app.logger.debug("tiles_attr, %s", tiles_attr)
+    flash("計算成功", "success")
     return render_template(
         "index.html", tiles=tiles, result=result, tiles_attr=tiles_attr
     )

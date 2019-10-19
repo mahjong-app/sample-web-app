@@ -9,7 +9,8 @@ def create_app(config_name):
     # app = Flask(__name__)
     app.config.from_object(config[config_name])
     app.logger.debug("Init Flask app config: %s", config_name)
-    app.config.from_object(config[config_name])
+    # app.config.from_object(config[config_name])
+    app.config["SECRET_KEY"] = "mahjong_sample"
     # config_json_path = Path(__file__).parent / "config" / "json-schemas"
     # for p in config_json_path.glob("*.json"):
     #     with open(p) as f:
