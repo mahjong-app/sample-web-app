@@ -4,8 +4,8 @@ import numpy as np
 # from scipy.misc import imresize
 from PIL import Image as pil_image
 from keras.preprocessing import image
-from postprocess import PostProcess
-from ssd.ssd import SingleShotMultiBoxDetector
+from .postprocess import PostProcess
+from .ssd.ssd import SingleShotMultiBoxDetector
 
 
 model_file = Path(__file__).parent / "models" / "weights.25-0.05.hdf5"
